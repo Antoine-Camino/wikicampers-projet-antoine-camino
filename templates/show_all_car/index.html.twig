@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}crud
+{% endblock %}
+
+{% block body %}
+
+	<div id="btn-add">
+
+		<a class="btn-add" href="{{ path('car.add')}}">créer une voiture</a>
+		<a class="btn-add" href="{{ path('availability.add')}}">créer une disponibilité</a>
+
+	</div>
+
+	{% for availability in dispos %}
+
+		<div class="data-container-crud">
+
+			<div class="data-crud">
+
+				<p>ID :{{ availability.id }}</p>
+				<p>Prix :{{ availability.price }} €/jour</p>
+				<p>Date de début :{{ availability.startDate|date('d-m-Y') }}</p>
+				<p>Date de fin :{{ availability.endDate|date('d-m-Y') }}</p>
+				<p>Disponible :{{ availability.available ? 'Oui' : 'Non' }}</p>
+				<p>Voitures : </p>
+                <ul>
+                    {% for car in availability.linkCar %}
+                        <li>{{ car.brand }}
+                            -
+                            {{ car.model }}
+                            (ID:
+                            {{ car.id }})</li>
+                    {% endfor %}
+                </ul>
+			</div>
+
+			<div>
+				<a id="btn-crud" href="{{ path('car.edit', { 'id': availability.id }) }}">Modifier</a>
+				<form action="{{ path('availability.delete', { 'id': availability.id }) }}" method="post" style="display: inline-block;">
+					<input type="hidden" name="_method" value="DELETE">
+					<button id="btn-crud-2" type="submit">Supprimer</button>
+				</form>
+
+			</div>
+
+
+		</div>
+
+
+	{% endfor %}
+{% endblock %}
+

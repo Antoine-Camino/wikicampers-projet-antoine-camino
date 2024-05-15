@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}accueil
+{% endblock %}
+
+{% block body %}
+	<div class="main-container">
+		<h1>Wikicampers test technique</h1>
+
+		<div class="form-container">
+			{{ form_start(ChooseDateandPriceType) }}
+			{{ form_widget(ChooseDateandPriceType) }}
+			{{ form_end(ChooseDateandPriceType) }}
+		</div>
+
+		{% if startDate is not null and endDate is not null %}
+			<p class="select-date">Disponibilité du
+				{{ startDate|date('d/m/Y') }}
+				au
+				{{ endDate|date('d/m/Y') }}</p>
+		{% endif %}
+
+
+		{% for dispo in dispos %}
+			<div class="data-container">
+
+				{% if dispo.startDate >= startDate and dispo.endDate <= endDate and dispo.price <= maxPrice %}
+
+					<div class="data">
+
+                        <div>
+                            <p>Disponibilité numéro :
+							{{ dispo.id }}</p>
+						<p>{{ dispo.startDate|date('d/m/Y') }}
+							au
+							{{ dispo.endDate|date('d/m/Y') }}</p>
+						<p>Disponible:
+							{{ dispo.available == 1 ? 'oui' : 'non' }}</p>
+						
+						<ul>
+							{% for car in dispo.linkCar %}
+								<li>{{ car.brand }}
+									-
+									{{ car.model }}
+									(ID:
+									{{ car.id }})</li>
+							{% endfor %}
+						</ul>
+                        
+                        
+                        </div>
+
+
+                        <div>
+                        <p>à partir de :
+                                {{ dispo.price }}€ /jour</p>
+                        
+                        </div>
+						
+					</div>
+				{% endif %}
+
+
+			</div>
+
+		{% endfor %}
+
+	</div>
+{% endblock %}
+
